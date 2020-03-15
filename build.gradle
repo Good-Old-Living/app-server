@@ -1,0 +1,52 @@
+apply plugin: 'java'
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+ext.j2ee_lib = '/scratch/java/jdk1.8.0_101/jre/j2ee-lib'
+ext.platform_jar = '/scratch/dev/product/platform/build/libs/platform-1.0.jar'
+ext.app_home='/scratch/app/apache-tomcat-8.5.4/webapps/'
+
+
+allprojects {
+    apply plugin: 'java'
+    apply plugin: 'eclipse'
+    group = 'paaril.application'
+    version = '1.0'
+    
+    repositories {
+          mavenCentral()
+    }
+    
+    dependencies {
+      compile files(project.property("platform_jar"))
+      compile files(project.property("j2ee_lib")+'/javax.persistence-2.1.0.jar')
+      compile files(project.property("j2ee_lib")+'/servlet-api.jar')
+      testCompile 'junit:junit:4.12'
+    }
+    
+    sourceSets {
+        main {
+            java {
+                srcDir '_generated/src'         
+            }
+        }
+}
+}
+
+def alljar = task("alljar", type: Jar) {
+  baseName = "application"
+  dependsOn "build"
+}
+  subprojects {
+  //you can filter and only apply the configuration to the specific projects
+  project.plugins.withId("java") {
+       alljar.from sourceSets.main.output.asFileTree.matching {
+         include '**/*.class'
+    }
+  }
+}
+

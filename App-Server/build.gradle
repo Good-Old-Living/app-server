@@ -1,0 +1,15 @@
+apply plugin: 'java'
+
+ext.j2ee_lib = '/scratch/java/jdk1.8.0_101/jre/j2ee-lib'
+ext.platform_jar = '/scratch/dev/git-repo/app-platform/build/libs/app-platform-1.0.jar'
+ext.buinessapp_jar = '/scratch/dev/git-repo/application/module/ApplicationModule-BusinessApp/build/libs/ApplicationModule-BusinessApp-1.0.jar'
+dependencies {
+      compile files(project.property("platform_jar"))
+      compile files(project.property("buinessapp_jar"))
+      compile files(project.property("j2ee_lib")+'/comm.jar')
+      compile files(project.property("j2ee_lib")+'/javax.persistence-2.1.0.jar')
+      compile files(project.property("j2ee_lib")+'/jta-1.1.jar')
+      compile files(project.property("j2ee_lib")+'/mail.jar')
+      compile files(project.property("j2ee_lib")+'/servlet-api.jar')
+    }
+
